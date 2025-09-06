@@ -1,2 +1,170 @@
 apiVersion: v1
+entries:
+  argocd-apps-infra:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-07-23T02:59:09.110159913Z"
+    description: A Helm chart for Kubernetes
+    digest: 462e1cb773318397c855f542ed3b7fbfa846e972085b0c4001e79af2e55dc472
+    name: argocd-apps-infra
+    type: application
+    urls:
+    - https://helm-charts.miudetalles.com/argocd-apps-infra-0.1.0.tgz
+    version: 0.1.0
+  base-chart:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: Support for multiple main containers
+        - kind: added
+          description: HTTPRoute (Gateway API) support for modern traffic management
+        - kind: added
+          description: Support for CronJobs and Jobs
+        - kind: added
+          description: Advanced service configuration with multiple services
+        - kind: added
+          description: Network policies and RBAC support
+        - kind: added
+          description: Monitoring integration with ServiceMonitor and PodMonitor
+        - kind: added
+          description: Support for Horizontal and Vertical Pod Autoscaling
+        - kind: added
+          description: ConfigMaps and Secrets management
+        - kind: added
+          description: PodDisruptionBudget support
+        - kind: added
+          description: Multiple ingress support
+        - kind: added
+          description: StatefulSet and DaemonSet support
+        - kind: added
+          description: External Secrets Operator integration ready
+        - kind: added
+          description: Service Mesh integration ready
+        - kind: added
+          description: Comprehensive pod configuration options
+        - kind: added
+          description: Enterprise-grade security features
+      artifacthub.io/containsSecurityUpdates: "false"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+          description: For monitoring integration
+        - url: https://artifacthub.io/packages/helm/external-secrets-operator/external-secrets
+          description: For external secrets management
+    apiVersion: v2
+    appVersion: latest
+    created: "2025-07-23T02:59:09.112207865Z"
+    description: Enterprise-grade Helm chart for Kubernetes workloads with comprehensive
+      feature support
+    digest: 8964db2ca497485d9ea2a8ac42dd2eb2847d9c054ed07f7f949d20b4c86a518c
+    home: https://github.com/supermavster/miudetalles-helm-charts
+    icon: https://helm.sh/img/helm.svg
+    keywords:
+    - kubernetes
+    - helm
+    - deployment
+    - statefulset
+    - daemonset
+    - cronjob
+    - job
+    - enterprise
+    - production
+    - multi-container
+    - sidecar
+    - monitoring
+    - rbac
+    - security
+    - gateway-api
+    - httproute
+    kubeVersion: '>=1.21.0'
+    maintainers:
+    - email: miguel.vargas@inkaviation.io
+      name: Miguel Vargas - DevOps Team
+    name: base-chart
+    sources:
+    - https://github.com/supermavster/miudetalles-helm-charts
+    type: application
+    urls:
+    - https://helm-charts.miudetalles.com/base-chart-1.0.0.tgz
+    version: 1.0.0
+  frontend:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description: Vue.js 3 frontend application with TypeScript support
+        - kind: added
+          description: Nginx optimized for SPA and static assets
+        - kind: added
+          description: Vue Router history mode support
+        - kind: added
+          description: Security headers and caching optimization
+        - kind: added
+          description: Multi-environment configuration support
+        - kind: added
+          description: Horizontal Pod Autoscaler integration
+        - kind: added
+          description: Service mesh ready configuration
+      artifacthub.io/containsSecurityUpdates: "true"
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://artifacthub.io/packages/helm/cert-manager/cert-manager
+          description: For TLS certificate management
+        - url: https://artifacthub.io/packages/helm/ingress-nginx/ingress-nginx
+          description: For ingress traffic management
+      preserve-dependencies: "true"
+    apiVersion: v2
+    appVersion: 6.0.0
+    created: "2025-07-23T02:59:09.127882038Z"
+    dependencies:
+    - name: base-chart
+      repository: https://helm-charts.miudetalles.com
+      version: 1.0.0
+    description: Enterprise-grade Helm chart for Vue.js frontend application with
+      Nginx
+    digest: fe0afd2a504597b03aed25e0a00240b5ff72833a18f4a4e19b3be7d6130a531e
+    home: https://github.com/supermavster/miudetalles-iac
+    icon: https://vuejs.org/images/logo.png
+    keywords:
+    - frontend
+    - vue
+    - vuejs
+    - spa
+    - nginx
+    - web
+    - application
+    - typescript
+    - vite
+    kubeVersion: '>=1.21.0'
+    maintainers:
+    - email: miguelvargas@miudetalles.com
+      name: Miguel Vargas - DevOps Team
+    name: frontend
+    sources:
+    - https://github.com/supermavster/miudetalles-iac
+    - https://github.com/supermavster/miudetalles-helm-charts
+    type: application
+    urls:
+    - https://helm-charts.miudetalles.com/frontend-1.0.0.tgz
+    version: 1.0.0
+  nginx-php-app:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-07-23T02:59:09.130675524Z"
+    description: A Helm chart for nginx and PHP-FPM
+    digest: 95b95d0b55f181929e238fab37d32dbfcbc3c3e2c40bebf13e050cf1e6a05f0b
+    keywords:
+    - nginx
+    - php
+    - php-fpm
+    - web
+    - application
+    kubeVersion: '>=1.21.0'
+    maintainers:
+    - email: miguelvargas@inkaviation.com
+      name: Miguel Vargas - DevOps Team
+    name: nginx-php-app
+    type: application
+    urls:
+    - https://helm-charts.miudetalles.com/nginx-php-app-1.0.0.tgz
+    version: 1.0.0
 generated: "2025-07-23T02:59:09.105871061Z"
