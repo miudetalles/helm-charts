@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miudetalles Helm Charts Repository</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: #0f1419;
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            color: #e1e8ed;
+        }
+        
+        .helm-instructions {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e1e8ed;
+        }
+        
+        .helm-instructions h2 {
+            color: #0f1419;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .code-block {
+            background-color: #f5f7fa;
+            border: 1px solid #e1e8ed;
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .code-block code {
+            color: #0f1419;
+            font-size: 14px;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .chart-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e1e8ed;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .chart-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .chart-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .chart-icon {
+            width: 48px;
+            height: 48px;
+            margin-right: 15px;
+            background-color: #0f1419;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .chart-title h3 {
+            color: #0f1419;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .chart-version {
+            color: #657786;
+            font-size: 0.9rem;
+        }
+        
+        .chart-description {
+            color: #657786;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .chart-meta {
+            border-top: 1px solid #e1e8ed;
+            padding-top: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #657786;
+        }
+        
+        .meta-item strong {
+            color: #0f1419;
+            margin-right: 5px;
+        }
+        
+        .chart-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .keyword-tag {
+            background-color: #e1e8ed;
+            color: #0f1419;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .download-button {
+            background-color: #1da1f2;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+        
+        .download-button:hover {
+            background-color: #1991db;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #657786;
+        }
+        
+        .error {
+            background-color: #fee;
+            color: #c33;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #fcc;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: #657786;
+            border-top: 1px solid #e1e8ed;
+            margin-top: 60px;
+        }
+        
+        .footer a {
+            color: #1da1f2;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>⎈ Miudetalles Helm Charts</h1>
+            <p>Enterprise-grade Helm charts repository for Kubernetes workloads</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="helm-instructions">
+            <h2>📦 How to Use This Repository</h2>
+            <p>Add this repository to your Helm client:</p>
+            <div class="code-block">
+                <code>helm repo add miudetalles-charts https://helm-charts.miudetalles.com/</code>
+            </div>
+            <p>Update your repositories:</p>
+            <div class="code-block">
+                <code>helm repo update</code>
+            </div>
+            <p>Search for charts:</p>
+            <div class="code-block">
+                <code>helm search repo miudetalles-charts</code>
+            </div>
+        </div>
+        
+        <div id="loading" class="loading">
+            <p>Loading charts...</p>
+        </div>
+        
+        <div id="error" class="error" style="display: none;"></div>
+        
+        <div id="charts-container" class="charts-grid" style="display: none;"></div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>Maintained by <a href="https://github.com/supermavster">Supermavster</a> | 
+            <a href="https://github.com/supermavster/miudetalles-helm-charts">View on GitHub</a></p>
+        </div>
+    </footer>
+    
+    <script>
+        async function loadCharts() {
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const chartsContainer = document.getElementById('charts-container');
+            
+            try {
+                // Fetch the index.yaml file
+                const response = await fetch('index.yaml');
+                if (!response.ok) {
+                    throw new Error(`Failed to load index.yaml: ${response.statusText}`);
+                }
+                
+                const yamlText = await response.text();
+                const data = jsyaml.load(yamlText);
+                
+                // Hide loading
+                loadingEl.style.display = 'none';
+                
+                // Process and display charts
+                if (data.entries) {
+                    chartsContainer.style.display = 'grid';
+                    
+                    for (const [chartName, versions] of Object.entries(data.entries)) {
+                        // Sort versions by version number (newest first)
+                        versions.sort((a, b) => {
+                            return b.version.localeCompare(a.version, undefined, { numeric: true, sensitivity: 'base' });
+                        });
+                        
+                        // Display each version
+                        versions.forEach((chart, index) => {
+                            const chartCard = createChartCard(chartName, chart, index === 0);
+                            chartsContainer.appendChild(chartCard);
+                        });
+                    }
+                } else {
+                    errorEl.textContent = 'No charts found in the repository.';
+                    errorEl.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Error loading charts:', error);
+                loadingEl.style.display = 'none';
+                errorEl.textContent = `Error loading charts: ${error.message}`;
+                errorEl.style.display = 'block';
+            }
+        }
+        
+        function createChartCard(chartName, chart, isLatest) {
+            const card = document.createElement('div');
+            card.className = 'chart-card';
+            
+            // Chart header with icon
+            const header = document.createElement('div');
+            header.className = 'chart-header';
+            
+            const icon = document.createElement('div');
+            icon.className = 'chart-icon';
+            icon.innerHTML = '⎈';
+            
+            const titleContainer = document.createElement('div');
+            titleContainer.className = 'chart-title';
+            
+            const title = document.createElement('h3');
+            title.textContent = chart.name || chartName;
+            
+            const version = document.createElement('div');
+            version.className = 'chart-version';
+            version.textContent = `v${chart.version}${isLatest ? ' (latest)' : ''}`;
+            
+            titleContainer.appendChild(title);
+            titleContainer.appendChild(version);
+            header.appendChild(icon);
+            header.appendChild(titleContainer);
+            card.appendChild(header);
+            
+            // Description
+            if (chart.description) {
+                const description = document.createElement('p');
+                description.className = 'chart-description';
+                description.textContent = chart.description;
+                card.appendChild(description);
+            }
+            
+            // Metadata
+            const meta = document.createElement('div');
+            meta.className = 'chart-meta';
+            
+            // App Version
+            if (chart.appVersion) {
+                const appVersion = document.createElement('div');
+                appVersion.className = 'meta-item';
+                appVersion.innerHTML = `<strong>App Version:</strong> ${chart.appVersion}`;
+                meta.appendChild(appVersion);
+            }
+            
+            // Type
+            if (chart.type) {
+                const type = document.createElement('div');
+                type.className = 'meta-item';
+                type.innerHTML = `<strong>Type:</strong> ${chart.type}`;
+                meta.appendChild(type);
+            }
+            
+            // Kubernetes Version
+            if (chart.kubeVersion) {
+                const kubeVersion = document.createElement('div');
+                kubeVersion.className = 'meta-item';
+                kubeVersion.innerHTML = `<strong>Kubernetes:</strong> ${chart.kubeVersion}`;
+                meta.appendChild(kubeVersion);
+            }
+            
+            // Created date
+            if (chart.created) {
+                const created = document.createElement('div');
+                created.className = 'meta-item';
+                const date = new Date(chart.created);
+                created.innerHTML = `<strong>Published:</strong> ${date.toLocaleDateString()}`;
+                meta.appendChild(created);
+            }
+            
+            card.appendChild(meta);
+            
+            // Keywords
+            if (chart.keywords && chart.keywords.length > 0) {
+                const keywordsContainer = document.createElement('div');
+                keywordsContainer.className = 'chart-keywords';
+                
+                chart.keywords.slice(0, 5).forEach(keyword => {
+                    const tag = document.createElement('span');
+                    tag.className = 'keyword-tag';
+                    tag.textContent = keyword;
+                    keywordsContainer.appendChild(tag);
+                });
+                
+                if (chart.keywords.length > 5) {
+                    const moreTag = document.createElement('span');
+                    moreTag.className = 'keyword-tag';
+                    moreTag.textContent = `+${chart.keywords.length - 5} more`;
+                    keywordsContainer.appendChild(moreTag);
+                }
+                
+                card.appendChild(keywordsContainer);
+            }
+            
+            // Download button
+            if (chart.urls && chart.urls.length > 0) {
+                const downloadLink = document.createElement('a');
+                downloadLink.className = 'download-button';
+                downloadLink.href = chart.urls[0];
+                downloadLink.textContent = 'Download Chart';
+                downloadLink.download = true;
+                card.appendChild(downloadLink);
+            }
+            
+            return card;
+        }
+        
+        // Load charts when page loads
+        document.addEventListener('DOMContentLoaded', loadCharts);
+    </script>
+</body>
+</html> 
